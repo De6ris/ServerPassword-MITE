@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "server-password-mod",
+  "version": "${version}",
+  "depends": {
+    "fishmodloader": ">=3.2.3"
+  },
+  "environment": "server",
+  "name": "ServerPasswordMod",
+  "description": "",
+  "authors": [
+    "Wensc",
+    "Debris"
+  ],
+  "entrypoints": {
+    "main": [
+      "net.wensc.serverPassword.ServerPasswordMod"
+    ]
+  },
+  "mixins": [
+    "ServerPasswordMod.mixins.json"
+  ]
+}
