@@ -1,7 +1,7 @@
 package net.wensc.serverPassword.mixins;
 
 import net.minecraft.*;
-import net.wensc.serverPassword.api.CustomServerPlayer;
+import net.wensc.serverPassword.api.IServerPlayer;
 import net.wensc.serverPassword.util.LogWriter;
 import net.wensc.serverPassword.util.PasswordManager;
 import net.xiaoyu233.fml.util.ReflectHelper;
@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin({ServerPlayer.class})
-public abstract class MixinServerPlayer extends EntityPlayer implements CustomServerPlayer {
+public abstract class MixinServerPlayer extends EntityPlayer implements IServerPlayer {
     @Unique
     private PasswordManager passwordManager = new PasswordManager(ReflectHelper.dyCast(this));
 
     @Override
-    public PasswordManager getPasswordManager() {
+    public PasswordManager svpwd$getPasswordManager() {
         return this.passwordManager;
     }
 
@@ -52,7 +52,7 @@ public abstract class MixinServerPlayer extends EntityPlayer implements CustomSe
 
     @Inject(method = {"clonePlayer(Lnet/minecraft/EntityPlayer;Z)V"}, at = {@At("RETURN")})
     public void injectClonePlayer(EntityPlayer par1EntityPlayer, boolean par2, CallbackInfo callbackInfo) {
-        this.passwordManager.cloneFrom(((CustomServerPlayer) par1EntityPlayer).getPasswordManager());
+        this.passwordManager.cloneFrom(((IServerPlayer) par1EntityPlayer).svpwd$getPasswordManager());
     }
 
     @Inject(method = {"onUpdate()V"}, at = {@At("HEAD")}, cancellable = true)

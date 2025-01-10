@@ -4,7 +4,7 @@ import net.minecraft.ChatMessageComponent;
 import net.minecraft.CommandBase;
 import net.minecraft.EnumChatFormatting;
 import net.minecraft.ICommandSender;
-import net.wensc.serverPassword.api.CustomServerPlayer;
+import net.wensc.serverPassword.api.IServerPlayer;
 import net.wensc.serverPassword.api.PasswordStatus;
 
 public class CommandLogin extends CommandBase {
@@ -26,9 +26,9 @@ public class CommandLogin extends CommandBase {
     @Override
     public void processCommand(ICommandSender iCommandSender, String[] strings) {
         String password = strings[0];
-        PasswordManager passwordManager = ((CustomServerPlayer) CommandBase.getCommandSenderAsPlayer(iCommandSender).getAsPlayer()).getPasswordManager();
+        PasswordManager passwordManager = ((IServerPlayer) CommandBase.getCommandSenderAsPlayer(iCommandSender).getAsPlayer()).svpwd$getPasswordManager();
         if (passwordManager.isPasswordSet() && passwordManager.checkPassword(password)) {
-            passwordManager.setPasswordStatus(PasswordStatus.SAMEPWD);
+            passwordManager.setPasswordStatus(PasswordStatus.SAME_PWD);
             iCommandSender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("登录成功").setColor(EnumChatFormatting.AQUA));
             LogWriter.writeLog(iCommandSender.getCommandSenderName(), "登录成功，密码：" + password);
         } else {
